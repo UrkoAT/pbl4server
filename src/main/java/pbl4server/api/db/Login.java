@@ -4,18 +4,31 @@ import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Properties;
 
 import org.json.JSONObject;
 
+import pbl4server.api.GlobalUtils;
 import spark.Request;
 import spark.Response;
 
 public class Login {
+	private static final String PROPERTIES_FILE = "config/login.properties";
+	private static final String LOGIN_STATEMENT;
+	private static final String NEW_SESSION_STATEMENT;
+	private static final String CHECK_SESSION;
+	private static final String RENEW_SESSION;
+	private static final Integer HASH_LENGTH;
 
-	private static final String LOGIN_STATEMENT = "SELECT trabajador_id FROM trabajadores WHERE usuario = ? AND password = ? LIMIT 1";
-	private static final String NEW_SESSION_STATEMENT = "INSERT INTO sessions (session_id, user_id, timestamp) VALUES (?, ?, NOW()) RETURNING session_id";
-	private static final String CHECK_SESSION = "SELECT * FROM sessions WHERE session_id = ? AND user_id = ?";
-	private static final Integer HASH_LENGTH = 32;	
+	static {
+		Properties loginProps = GlobalUtils.loadPropertiesFile(PROPERTIES_FILE);
+		LOGIN_STATEMENT = loginProps.getProperty("login_statement");
+		NEW_SESSION_STATEMENT = loginProps.getProperty("new_session_statement");
+		CHECK_SESSION = loginProps.getProperty("check_session");
+		RENEW_SESSION = loginProps.getProperty("renew_session");
+		HASH_LENGTH = Integer.valueOf(loginProps.getProperty("hash_lenght"));
+	}
+
 
 	public static String checkLogin(Request req, Response res) {
 		Boolean success = false;
@@ -36,7 +49,7 @@ public class Login {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		resJSON.put("success", success);
 		return resJSON.toString();
 	}
@@ -104,6 +117,22 @@ public class Login {
 				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 
 		return generatedString;
+	}
+
+	public static Boolean renewSession(String session, Integer user_id) {
+		Boolean renewed = false;
+		try {
+			Connection connection = Connector.getConnection();
+			PreparedStatement pStatement = connection.prepareStatement(RENEW_SESSION);
+			pStatement.setString(1, session);
+			pStatement.setInt(2, user_id);
+			renewed = pStatement.execute();
+			return renewed;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return renewed;
+		}
 	}
 
 }
