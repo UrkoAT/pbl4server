@@ -35,8 +35,8 @@ public class Login {
 		JSONObject resJSON = new JSONObject();
 		try {
 			JSONObject reqJSON = new JSONObject(req.body());
-			String username = reqJSON.getString("username");
-			String password = reqJSON.getString("password");
+			String username = reqJSON.getString("user");
+			String password = reqJSON.getString("pass");
 			Integer login_id = loginDB(username, password);
 
 			if (login_id != -1) {
@@ -50,7 +50,7 @@ public class Login {
 			e.printStackTrace();
 		}
 
-		resJSON.put("success", success);
+		resJSON.put("login", success?"correct":"invalid");
 		return resJSON.toString();
 	}
 
