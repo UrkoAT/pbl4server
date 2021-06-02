@@ -9,7 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import pbl4server.api.db.Login;
+import pbl4server.api.db.LoginHandler;
 
 public class Server {
 
@@ -23,7 +23,7 @@ public class Server {
 			System.out.println("[" + dateFormat.format(date) + "] INFO Received API call" + req.pathInfo());
 			});
 
-			post("/login", (req, res) ->  Login.checkLogin(req, res));
+			post("/login", (req, res) ->  LoginHandler.checkLogin(req, res));
 		});
 	}
 }

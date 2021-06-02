@@ -12,7 +12,7 @@ import pbl4server.api.GlobalUtils;
 import spark.Request;
 import spark.Response;
 
-public class Login {
+public class LoginHandler {
 	private static final String PROPERTIES_FILE = "config/login.properties";
 	private static final String LOGIN_STATEMENT;
 	private static final String NEW_SESSION_STATEMENT;
@@ -42,8 +42,9 @@ public class Login {
 			if (login_id != -1) {
 				String session = newSession(login_id);
 				if (session != null) {
-					success = true;
+					resJSON.put("user_id", login_id);
 					resJSON.put("session", session);
+					success = true;
 				}
 			}
 		} catch (Exception e) {
