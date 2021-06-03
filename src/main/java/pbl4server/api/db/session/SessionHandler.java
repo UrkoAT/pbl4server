@@ -1,4 +1,4 @@
-package pbl4server.api.db;
+package pbl4server.api.db.session;
 
 import java.security.SecureRandom;
 import java.sql.Connection;
@@ -6,53 +6,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Properties;
 
-import org.json.JSONObject;
-
 import pbl4server.api.GlobalUtils;
-import spark.Request;
-import spark.Response;
+import pbl4server.api.db.connection.Connector;
 
-public class LoginHandler {
-	private static final String PROPERTIES_FILE = "config/login.properties";
-	private static final String LOGIN_STATEMENT;
+public class SessionHandler {
+	
+	private static final String PROPERTIES_FILE = "config/session.properties";
 	private static final String NEW_SESSION_STATEMENT;
 	private static final String CHECK_SESSION;
 	private static final String RENEW_SESSION;
 	private static final Integer HASH_LENGTH;
-
+	
 	static {
-		Properties loginProps = GlobalUtils.loadPropertiesFile(PROPERTIES_FILE);
-		LOGIN_STATEMENT = loginProps.getProperty("login_statement");
-		NEW_SESSION_STATEMENT = loginProps.getProperty("new_session_statement");
-		CHECK_SESSION = loginProps.getProperty("check_session");
-		RENEW_SESSION = loginProps.getProperty("renew_session");
-		HASH_LENGTH = Integer.valueOf(loginProps.getProperty("hash_lenght"));
-	}
-
-
-	public static String checkLogin(Request req, Response res) {
-		Boolean success = false;
-		JSONObject resJSON = new JSONObject();
-		try {
-			JSONObject reqJSON = new JSONObject(req.body());
-			String username = reqJSON.getString("user");
-			String password = reqJSON.getString("pass");
-			Integer login_id = loginDB(username, password);
-
-			if (login_id != -1) {
-				String session = newSession(login_id);
-				if (session != null) {
-					resJSON.put("user_id", login_id);
-					resJSON.put("session", session);
-					success = true;
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		resJSON.put("login", success?"correct":"invalid");
-		return resJSON.toString();
+		Properties sessionProps = GlobalUtils.loadPropertiesFile(PROPERTIES_FILE);
+		NEW_SESSION_STATEMENT = sessionProps.getProperty("new_session_statement");
+		CHECK_SESSION = sessionProps.getProperty("check_session");
+		RENEW_SESSION = sessionProps.getProperty("renew_session");
+		HASH_LENGTH = Integer.valueOf(sessionProps.getProperty("hash_lenght"));
 	}
 
 	public static String newSession(Integer id) {
@@ -73,25 +43,7 @@ public class LoginHandler {
 			return null;
 		}
 	}
-
-	private static Integer loginDB(String username, String password) {
-		Integer id = -1;
-		try {
-			Connection connection = Connector.getConnection();
-			PreparedStatement pStatement = connection.prepareStatement(LOGIN_STATEMENT);
-			pStatement.setString(1, username);
-			pStatement.setString(2, password);
-			ResultSet rSet = pStatement.executeQuery();
-			if (rSet.next()) {
-				id = rSet.getInt("trabajador_id");
-			}
-			return id;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return -1;
-		}
-	}
-
+	
 	public static Boolean checkSession(String session, Integer user_id) {
 		Boolean validSession = false;
 		try {

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import pbl4server.api.db.connection.Connector;
+
 public class Card {
 	
 	public static final String REGISTER_CARD = "INSERT INTO registros VALUES (?, NOW(), ?);";

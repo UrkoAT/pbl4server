@@ -1,4 +1,4 @@
-package pbl4server.api.rest;
+package pbl4server.api.request;
 
 import static spark.Spark.before;
 import static spark.Spark.path;
@@ -9,11 +9,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import pbl4server.api.db.LoginHandler;
+import pbl4server.api.db.session.LoginHandler;
+import pbl4server.api.db.session.SessionControl;
 
 public class Server {
 
 	public static void main(String[] args) {
+		SessionControl sessionC = new SessionControl();
+		sessionC.startTimer();
 		port(80);
 		path("/api", () -> {
 
