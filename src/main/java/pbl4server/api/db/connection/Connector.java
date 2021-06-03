@@ -1,4 +1,4 @@
-package pbl4server.api.db;
+package pbl4server.api.db.connection;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
