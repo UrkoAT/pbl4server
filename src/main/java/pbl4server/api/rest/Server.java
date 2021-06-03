@@ -14,7 +14,7 @@ import pbl4server.api.db.Login;
 public class Server {
 
 	public static void main(String[] args) {
-		port(80);
+		port(8844);
 		path("/api", () -> {
 
 			before("/*", (req, res) -> {
