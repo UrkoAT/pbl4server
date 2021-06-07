@@ -43,6 +43,7 @@ public class LoginHandler {
 		}
 
 		resJSON.put("login", success ? "correct" : "invalid");
+		resJSON.put("status", success ? "ok" : "error");
 		return resJSON.toString();
 	}
 
