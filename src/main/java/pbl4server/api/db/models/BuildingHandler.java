@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Properties;
 
 import org.json.JSONArray;
@@ -108,7 +107,7 @@ public class BuildingHandler {
 		Boolean correct = false;
 		try {
 			Connection conn = Connector.getConnection();
-			PreparedStatement pStatement = conn.prepareStatement(INSERT_STATEMENT);
+			PreparedStatement pStatement = conn.prepareStatement(UPDATE_STATEMENT);
 			pStatement.setString(1, jsonObject.getString("name"));
 			pStatement.setString(2, jsonObject.getString("postal_code"));
 			pStatement.setString(3, disable?"False":"True");
