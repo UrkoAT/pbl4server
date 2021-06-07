@@ -30,6 +30,7 @@ public class Server {
 
 			post("/login", (req, res) ->  LoginHandler.checkLogin(req, res));
 			get("/userById", (req, res) ->  UserHandler.getUser(req, res));
+			get("/buildings", (req, res) ->  UserHandler.getUser(req, res));
 		});
 	}
 }

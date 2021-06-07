@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-import pbl4server.api.GlobalUtils;
+import pbl4server.api.utils.GlobalUtils;
 
 public class Connector {
 	private static final String PROPERTIES_FILE = "config/connector.properties";

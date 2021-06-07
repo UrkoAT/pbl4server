@@ -1,4 +1,4 @@
-package pbl4server.api;
+package pbl4server.api.utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;

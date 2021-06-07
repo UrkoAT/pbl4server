@@ -9,9 +9,9 @@ import java.util.Properties;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import pbl4server.api.GlobalUtils;
 import pbl4server.api.db.connection.Connector;
 import pbl4server.api.db.session.SessionHandler;
+import pbl4server.api.utils.GlobalUtils;
 import spark.Request;
 import spark.Response;
 

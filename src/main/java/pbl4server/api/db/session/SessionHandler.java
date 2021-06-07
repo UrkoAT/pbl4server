@@ -6,8 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Properties;
 
-import pbl4server.api.GlobalUtils;
 import pbl4server.api.db.connection.Connector;
+import pbl4server.api.utils.GlobalUtils;
 
 public class SessionHandler {
 	
