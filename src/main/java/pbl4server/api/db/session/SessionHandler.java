@@ -44,13 +44,12 @@ public class SessionHandler {
 		}
 	}
 	
-	public static Boolean checkSession(String session, Integer user_id) {
+	public static Boolean checkSession(String session) {
 		Boolean validSession = false;
 		try {
 			Connection connection = Connector.getConnection();
 			PreparedStatement pStatement = connection.prepareStatement(CHECK_SESSION);
 			pStatement.setString(1, session);
-			pStatement.setInt(2, user_id);
 			ResultSet rSet = pStatement.executeQuery();
 			validSession = rSet.next();
 			return validSession;

@@ -19,7 +19,6 @@ public class LoginHandler {
 	static {
 		Properties loginProps = GlobalUtils.loadPropertiesFile(PROPERTIES_FILE);
 		LOGIN_STATEMENT = loginProps.getProperty("login_statement");
-
 	}
 
 	public static String checkLogin(Request req, Response res) {
