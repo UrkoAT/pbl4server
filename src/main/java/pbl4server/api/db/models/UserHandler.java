@@ -4,12 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.Properties;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.omg.CORBA.OBJ_ADAPTER;
 
 import pbl4server.api.GlobalUtils;
 import pbl4server.api.db.connection.Connector;
@@ -85,20 +83,14 @@ public class UserHandler {
 			JSONObject obj = new JSONObject();
 			obj.put("description", rSet.getString("descripcion"));
 			obj.put("floor", rSet.getString("piso"));
-			obj.put("building", parseBuilding(rSet));
+			obj.put("building", BuildingHandler.parseBuilding(rSet));
 			obj.put("enabled", rSet.getString("enabled"));
 			array.put(obj);
 		}
 		return array;
 	}
 	
-	private static JSONObject parseBuilding(ResultSet rSet) throws SQLException {
-		JSONObject building = new JSONObject();
-		building.put("bulding_id", rSet.getInt("edificio_id"));
-		building.put("postal_code", rSet.getString("codigo_postal"));
-		building.put("name", rSet.getString("nombre"));
-		return building;
-	}
+
 	
 	
 	
