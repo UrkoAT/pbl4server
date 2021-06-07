@@ -65,6 +65,7 @@ public class UserHandler {
 				userJSON.put("email", rSet.getString("email"));
 				userJSON.put("department", rSet.getString("email"));
 				userJSON.put("is_admin", rSet.getBoolean("admin"));
+				userJSON.put("dni", rSet.getString("dni"));
 				pStatement = conn.prepareStatement(GET_PERMS_STATEMENT);
 				pStatement.setInt(1, user_id);
 				rSet = pStatement.executeQuery();
