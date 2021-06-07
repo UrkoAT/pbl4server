@@ -34,12 +34,12 @@ public class UserHandler {
 		Boolean success = false;
 		JSONObject resJSON = new JSONObject();
 		try {
-			JSONObject reqJSON = new JSONObject(req.body());
-			String session = reqJSON.getString("session");
+			String session = req.queryParams("session");
 			
 			if (!SessionHandler.checkSession(session)) throw new Exception("Session not valid...");
-			Integer user_id = reqJSON.getInt("user_id");
+			Integer user_id = Integer.valueOf(req.queryParams("id"));
 			resJSON.put("user", getUserDB(user_id));
+			SessionHandler.renewSession(session);
 			success = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -49,14 +49,14 @@ public class UserHandler {
 	}
 	
 	private static JSONObject getUserDB(Integer user_id) {
-		JSONObject jsonObject = new JSONObject();
+		JSONObject userJSON = null;
 		try {
 			Connection conn = Connector.getConnection();
 			PreparedStatement pStatement = conn.prepareStatement(GET_STATEMENT);
 			pStatement.setInt(1, user_id);
 			ResultSet rSet = pStatement.executeQuery();
-			if (!rSet.next()) {
-				JSONObject userJSON = new JSONObject();
+			if (rSet.next()) {
+				userJSON = new JSONObject();
 				userJSON.put("user_id", rSet.getInt("trabajador_id"));
 				userJSON.put("name", rSet.getString("nombre"));
 				userJSON.put("surname", rSet.getString("apellido"));
@@ -72,14 +72,11 @@ public class UserHandler {
 				rSet = pStatement.executeQuery();
 				JSONArray array = parsePermissions(rSet);
 				userJSON.put("permissions", array);
-				jsonObject.put("user", userJSON);
 			}
-			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return jsonObject;
+		return userJSON;
 	}
 
 	private static JSONArray parsePermissions(ResultSet rSet) throws SQLException{
