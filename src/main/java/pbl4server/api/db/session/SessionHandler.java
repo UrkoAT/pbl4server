@@ -71,13 +71,12 @@ public class SessionHandler {
 		return generatedString;
 	}
 
-	public static Boolean renewSession(String session, Integer user_id) {
+	public static Boolean renewSession(String session) {
 		Boolean renewed = false;
 		try {
 			Connection connection = Connector.getConnection();
 			PreparedStatement pStatement = connection.prepareStatement(RENEW_SESSION);
 			pStatement.setString(1, session);
-			pStatement.setInt(2, user_id);
 			renewed = pStatement.execute();
 			return renewed;
 
