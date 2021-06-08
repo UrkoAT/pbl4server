@@ -17,7 +17,7 @@ import spark.Response;
 
 public class BuildingHandler {
 
-	private static final String PROPERTIES_FILE = "config/builgings.properties";
+	private static final String PROPERTIES_FILE = "config/buildings.properties";
 	private static final String INSERT_STATEMENT;
 	private static final String GET_STATEMENT;
 	private static final String UPDATE_STATEMENT;
@@ -55,7 +55,7 @@ public class BuildingHandler {
 			String session = reqJSON.getString("session");
 			if (!SessionHandler.checkSession(session))
 				throw new Exception("Session not valid...");
-			id = insertBuildingDB(resJSON.getJSONObject("building"));
+			id = insertBuildingDB(reqJSON.getJSONObject("building"));
 			SessionHandler.renewSession(session);
 			success = true;
 		} catch (Exception e) {
@@ -110,7 +110,8 @@ public class BuildingHandler {
 			PreparedStatement pStatement = conn.prepareStatement(UPDATE_STATEMENT);
 			pStatement.setString(1, jsonObject.getString("name"));
 			pStatement.setString(2, jsonObject.getString("postal_code"));
-			pStatement.setString(3, disable?"False":"True");
+			pStatement.setBoolean(3, !disable);
+			pStatement.setInt(4, jsonObject.getInt("id"));
 			correct = pStatement.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,7 +137,7 @@ public class BuildingHandler {
 
 	public static JSONObject parseBuilding(ResultSet rSet) throws SQLException {
 		JSONObject building = new JSONObject();
-		building.put("bulding_id", rSet.getInt("edificio_id"));
+		building.put("building_id", rSet.getInt("edificio_id"));
 		building.put("postal_code", rSet.getString("codigo_postal"));
 		building.put("name", rSet.getString("nombre"));
 		return building;
