@@ -59,7 +59,7 @@ public class CardHandler {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		resJSON.put("permission", ok?1:0);
+		resJSON.put("permission", ok);
 		resJSON.put("status", success ? "ok" : "error");
 		return resJSON.toString();
 	}
