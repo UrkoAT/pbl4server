@@ -85,7 +85,6 @@ public class UserHandler {
 			obj.put("description", rSet.getString("descripcion"));
 			obj.put("floor", rSet.getString("piso"));
 			obj.put("building", BuildingHandler.parseBuilding(rSet));
-			obj.put("enabled", rSet.getString("enabled"));
 			array.put(obj);
 		}
 		return array;
