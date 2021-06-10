@@ -63,7 +63,7 @@ public class UserHandler {
 				userJSON.put("prefix", rSet.getString("prefijo"));
 				userJSON.put("telephone", rSet.getString("telefono"));
 				userJSON.put("email", rSet.getString("email"));
-				userJSON.put("department", rSet.getString("email"));
+				userJSON.put("department", rSet.getString("nombre_departamento"));
 				userJSON.put("is_admin", rSet.getBoolean("admin"));
 				userJSON.put("dni", rSet.getString("dni"));
 				pStatement = conn.prepareStatement(GET_PERMS_STATEMENT);
