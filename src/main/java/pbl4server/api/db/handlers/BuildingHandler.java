@@ -1,4 +1,4 @@
-package pbl4server.api.db.models;
+package pbl4server.api.db.handlers;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
