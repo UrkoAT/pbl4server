@@ -14,14 +14,14 @@ import spark.Response;
 public class CardHandler {
 	
 	public static final String REGISTER_CARD = "INSERT INTO registros VALUES (?, NOW(), ?);";
-	public static final String CHECK_PERMISSION = "SELECT * FROM permisos WHERE sala_id = ? AND user_id = (SELECT usuario_id FROM tarjetas WHERE tarjeta_id = ? );";
+	public static final String CHECK_PERMISSION = "SELECT * FROM permisos WHERE sala_id = ? AND trabajador_id = (SELECT usuario_id FROM tarjetas WHERE tarjeta = ? );";
 	
 	public static void registerCardDB(String uid, Boolean accepted) {
 		try {
 			Connection conn =  Connector.getConnection();
 			PreparedStatement pStatement = conn.prepareStatement(REGISTER_CARD);
-			pStatement.setString(0, uid);
-			pStatement.setBoolean(1, accepted);
+			pStatement.setString(1, uid);
+			pStatement.setBoolean(2, accepted);
 			pStatement.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -31,8 +31,8 @@ public class CardHandler {
 		try {
 			Connection conn =  Connector.getConnection();
 			PreparedStatement pStatement = conn.prepareStatement(CHECK_PERMISSION);
-			pStatement.setInt(0,  sala_id);
-			pStatement.setString(1, uid);
+			pStatement.setInt(1,  sala_id);
+			pStatement.setString(2, uid);
 			ResultSet rSet = pStatement.executeQuery();
 			if (rSet.next()) {
 				return true;

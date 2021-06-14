@@ -1,11 +1,10 @@
 package pbl4server.api.request;
 
 import static spark.Spark.before;
-import static spark.Spark.after;
+import static spark.Spark.get;
 import static spark.Spark.path;
 import static spark.Spark.port;
 import static spark.Spark.post;
-import static spark.Spark.get;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
